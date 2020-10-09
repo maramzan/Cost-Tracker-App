@@ -2,7 +2,9 @@ import React, { useContext, useState } from "react";
 import { TransactionContext } from "./transContext";
 
 const Child = () => {
-  const { transactions, addTransaction } = useContext(TransactionContext);
+  const { transactions, addTransaction, deleteTransactoin } = useContext(
+    TransactionContext
+  );
   const [newText, setNewText] = useState("");
   const [newAmount, setNewAmount] = useState(0);
 
@@ -29,6 +31,10 @@ const Child = () => {
       : addTransaction({ text: newText, amount: newAmount });
   };
 
+  const handleDelete = (key) => {
+    deleteTransactoin(key);
+  };
+
   return (
     <div className="container">
       <h2 className="text-center">This is Expense Tracker</h2>
@@ -50,7 +56,12 @@ const Child = () => {
           return (
             <li key={key}>
               {item.text} <span>{item.amount}</span>
-              <button className="delete-btn">x</button>
+              <button
+                onClick={() => handleDelete(item.id)}
+                className="delete-btn"
+              >
+                x
+              </button>
             </li>
           );
         })}
@@ -60,6 +71,7 @@ const Child = () => {
         <div>
           <label htmlFor="text">Text</label>
           <input
+            required
             onChange={(e) => {
               setNewText(e.target.value);
             }}
